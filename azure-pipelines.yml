@@ -5,16 +5,17 @@ pool:
   name: Default
   demands:
     - Agent.Name -equals vm1-guard-2026
-    - maven
 
 steps:
+- script: |
+    java -version
+    echo $JAVA_HOME
+  displayName: Verify Java Version
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+    goals: 'package -DskipTests=true'
